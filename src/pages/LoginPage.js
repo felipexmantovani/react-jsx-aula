@@ -1,45 +1,54 @@
 import React, { Component } from 'react';
 
-import { Container } from 'reactstrap';
-import {
-    BrowserRouter,
-    Route,
-    Switch
-} from 'react-router-dom';
+import { Button, Input } from 'reactstrap';
+import { Prompt } from 'react-router-dom';
 
-import './App.css';
+import { setAutenticado } from '../utils/LoginManeger';
 
-import HomePage from './HomePage';
-import TarefasPage from './TarefasPage';
-import SobrePage from './SobrePage';
-import LoginPage from './LoginPage';
+class LoginPage extends Component {
 
-import PrivateRoute from '../components/PrivateRoute';
-import Menu from '../components/Menu';
+    state = {}
 
-class App extends Component {
+    onLoginClick = () => {
+        this.setState(
+            {
+                usuario: '',
+                senha: '',
+            },
+            () => {
+                setAutenticado(true);
+                this.props.history.push('/');
+            }
+        )
+    }
+
+    onInputChange = event => {
+        const { name, value } = event.target
+        this.setState({
+            [name]: value
+        })
+    }
 
     render() {
+        const { usuario, senha } = this.state;
+        const bloquearNavegacao = Boolean(usuario || senha);
         return (
-            <BrowserRouter>
-                <Container>
-                    <Menu />
-
-                    <Switch>
-                        <Route path="/" exact component={HomePage} />
-                        <PrivateRoute path="/tarefas" component={TarefasPage} />
-                        <Route path="/sobre" component={SobrePage} />
-                        <Route path="/login" component={LoginPage} />
-                        <Route render={() => {
-                            return (
-                                <div>Página não encontrada.</div>
-                            );
-                        }} />
-                    </Switch>
-                </Container>
-            </BrowserRouter>
-        );
+            <div>
+                <h1>Login</h1>
+                <Prompt
+                    when={bloquearNavegacao}
+                    message="Deseja sair do Login?"
+                />
+                <Input type="text" name="usuario" placeholder="Usuário"
+                    onChange={this.onInputChange} />
+                <Input type="password" name="senha" placeholder="Senha"
+                    onChange={this.onInputChange} />
+                <Button onClick={this.onLoginClick}>
+                    Entrar
+        </Button>
+            </div>
+        )
     }
 }
 
-export default App;
+export default LoginPage;

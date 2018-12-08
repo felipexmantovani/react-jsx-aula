@@ -3,7 +3,9 @@ import React from 'react';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 
-import { isAutenticado, setAutenticado } from '../utils/LoginManeger';
+import {
+    isAutenticado, setAutenticado
+} from '../utils/LoginManeger';
 
 const Menu = (props) => {
     return (

@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 
 import { Container } from 'reactstrap';
 import {
-    BrowserRouter,
-    Route
+    // BrowserRouter,
+    HashRouter,
+    Route,
+    Switch
 } from 'react-router-dom';
 
 import './App.css';
@@ -20,16 +22,23 @@ class App extends Component {
 
     render() {
         return (
-            <BrowserRouter>
+            <HashRouter>
                 <Container>
                     <Menu />
 
-                    <Route path="/" exact component={HomePage} />
-                    <PrivateRoute path="/tarefas" component={TarefasPage} />
-                    <Route path="/sobre" component={SobrePage} />
-                    <Route path="/login" component={LoginPage} />
+                    <Switch>
+                        <Route path="/" exact component={HomePage} />
+                        <PrivateRoute path="/tarefas" component={TarefasPage} />
+                        <Route path="/sobre" component={SobrePage} />
+                        <Route path="/login" component={LoginPage} />
+                        <Route render={() => {
+                            return (
+                                <div>Página não encontrada.</div>
+                            );
+                        }} />
+                    </Switch>
                 </Container>
-            </BrowserRouter>
+            </HashRouter>
         );
     }
 }
